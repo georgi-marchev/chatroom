@@ -13,12 +13,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 
-		WebSocketMessageBrokerConfigurer.super.registerStompEndpoints(registry);
+		// TODO: Configurable
+		// Register the endpoint for websocket connections
+		registry.addEndpoint("/gmarchev-chatroom").withSockJS();
 	}
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 
-		WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
+		// Enable a simple memory-based message broker to carry the greeting messages back to the client on
+		// destinations prefixed with /topic
+		registry.enableSimpleBroker("/topic");
+
+		// Designate the /app prefix for messages that are bound for methods annotated with @MessageMapping
+		registry.setApplicationDestinationPrefixes("/app");
 	}
 }
