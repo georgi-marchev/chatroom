@@ -23,10 +23,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 
 		// Enable a simple memory-based message broker to carry the greeting messages back to the client on
-		// destinations prefixed with /topic
-		registry.enableSimpleBroker("/topic");
+		// destinations prefixed with /topic and /queue
+		registry.enableSimpleBroker("/topic", "/queue");
 
 		// Designate the /app prefix for messages that are bound for methods annotated with @MessageMapping
 		registry.setApplicationDestinationPrefixes("/app");
+
+		// Enable a user destination where data can be broadcasted for each user via session ID
+		registry.setUserDestinationPrefix("/user");
 	}
 }

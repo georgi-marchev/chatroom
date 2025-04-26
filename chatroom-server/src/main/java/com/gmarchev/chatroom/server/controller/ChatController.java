@@ -21,8 +21,11 @@ public class ChatController {
 			@Payload JoinChatRequest request,
 			SimpMessageHeaderAccessor headers) {
 
+		String sessionId = headers.getSessionId();
+
 		headers.getSessionAttributes().put(Constants.USERNAME_ATTR, request.getSender());
-		chatService.handleUserJoin(request);
+
+		chatService.handleUserJoin(request, sessionId);
 	}
 
 	@MessageMapping("/chat.sendMessage")

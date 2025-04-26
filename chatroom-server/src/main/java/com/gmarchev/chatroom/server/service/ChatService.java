@@ -26,9 +26,30 @@ public class ChatService {
 
 	public void handleUserJoin(JoinChatRequest request, String sessionId) {
 
+		broadcastHistoryToUser(sessionId);
+
 		ChatMessage joinMessage = persistJoinMessage(request);
 
 		messagingTemplate.convertAndSend(Constants.PUBLIC_CHANNEL, joinMessage);
+	}
+
+	private void broadcastHistoryToUser(String sessionId) {
+
+		List<ChatMessage> messages = chatMessageRepository.findTop100ByOrderByTimestampDesc();
+
+		messagingTemplate.convertAndSendToUser(
+				sessionId,
+				Constants.HISTORY_CHANNEL,
+				messages,
+				createHistoryBroadcastHeaders(sessionId));
+	}
+
+	private MessageHeaders createHistoryBroadcastHeaders(String sessionId) {
+
+		SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+		headerAccessor.setSessionId(sessionId);
+		headerAccessor.setLeaveMutable(true);
+		return headerAccessor.getMessageHeaders();
 	}
 
 	private ChatMessage persistJoinMessage(JoinChatRequest request) {
