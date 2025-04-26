@@ -36,7 +36,7 @@ public class WebSocketEventListener {
 					.build();
 
 			// Send the leave event to the chat message queue
-			messageSendingOperations.convertAndSend(Constants.PUBLIC_CHANNEL	, message);
+			messageSendingOperations.convertAndSend(Constants.PUBLIC_CHANNEL, message);
 		}
 	}
 }

@@ -14,8 +14,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 
 		// TODO: Configurable
-		// Register the endpoint for websocket connections
-		registry.addEndpoint("/gmarchev-chatroom").withSockJS();
+		registry.addEndpoint("/gmarchev-chatroom")
+				.setAllowedOriginPatterns("*")
+				.withSockJS();
 	}
 
 	@Override

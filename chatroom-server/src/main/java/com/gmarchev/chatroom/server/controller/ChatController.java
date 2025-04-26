@@ -1,35 +1,33 @@
 package com.gmarchev.chatroom.server.controller;
 
-import java.time.LocalDateTime;
-
 import com.gmarchev.chatroom.server.Constants;
-import com.gmarchev.chatroom.server.model.ChatMessage;
+import com.gmarchev.chatroom.server.dto.JoinChatRequest;
+import com.gmarchev.chatroom.server.dto.MessageChatRequest;
+import com.gmarchev.chatroom.server.service.ChatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+@RequiredArgsConstructor
 @Controller
 public class ChatController {
 
-	@MessageMapping("/chat.sendMessage")
-	@SendTo(Constants.PUBLIC_CHANNEL)
-	public ChatMessage sendMessage(@Payload ChatMessage message) {
+	private final ChatService chatService;
 
-		message.setTimestamp(LocalDateTime.now());
-
-		return message;
-	}
 	@MessageMapping("/chat.addUser")
-	@SendTo(Constants.PUBLIC_CHANNEL)
-	public ChatMessage joinChat(
-			@Payload ChatMessage message,
-			SimpMessageHeaderAccessor headerAccessor) {
+	public void joinChat(
+			@Payload JoinChatRequest request,
+			SimpMessageHeaderAccessor headers) {
 
-		// Add username in Web Socket
-		headerAccessor.getSessionAttributes().put(Constants.USERNAME_ATTR, message.getSender());
+		headers.getSessionAttributes().put(Constants.USERNAME_ATTR, request.getSender());
+		chatService.handleUserJoin(request);
+	}
 
-		return message;
+	@MessageMapping("/chat.sendMessage")
+	public void sendMessage(@Payload MessageChatRequest request) {
+
+		chatService.handleMessage(request);
 	}
 }
