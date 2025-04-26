@@ -1,13 +1,18 @@
 package com.gmarchev.chatroom.server.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.gmarchev.chatroom.server.Constants;
 import com.gmarchev.chatroom.server.dto.JoinChatRequest;
 import com.gmarchev.chatroom.server.dto.MessageChatRequest;
 import com.gmarchev.chatroom.server.model.ChatMessage;
 import com.gmarchev.chatroom.server.model.MessageType;
+import com.gmarchev.chatroom.server.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +22,29 @@ public class ChatService {
 
 	private final SimpMessagingTemplate messagingTemplate;
 
-	public void handleUserJoin(JoinChatRequest request) {
+	private final ChatMessageRepository chatMessageRepository;
+
+	public void handleUserJoin(JoinChatRequest request, String sessionId) {
+
+		ChatMessage joinMessage = persistJoinMessage(request);
+
+		messagingTemplate.convertAndSend(Constants.PUBLIC_CHANNEL, joinMessage);
+	}
+
+	private ChatMessage persistJoinMessage(JoinChatRequest request) {
+
+		String username = request.getSender();
 
 		ChatMessage joinMessage = ChatMessage.builder()
 				.type(MessageType.JOIN)
-				.sender(request.getSender())
+				.sender(username)
+				.content(username + " has joined")
 				.timestamp(LocalDateTime.now())
 				.build();
 
-		broadcast(joinMessage);
-	}
+		chatMessageRepository.save(joinMessage);
 
-	private void broadcast(ChatMessage message) {
-
-		messagingTemplate.convertAndSend(Constants.PUBLIC_CHANNEL, message);
+		return joinMessage;
 	}
 
 	public void handleMessage(MessageChatRequest request) {
@@ -42,6 +56,22 @@ public class ChatService {
 				.timestamp(LocalDateTime.now())
 				.build();
 
-		broadcast(message);
+		chatMessageRepository.save(message);
+
+		messagingTemplate.convertAndSend(Constants.PUBLIC_CHANNEL, message);
+	}
+
+	public void handleUserLeave(String username) {
+
+		ChatMessage message = ChatMessage.builder()
+				.sender(username)
+				.type(MessageType.LEAVE)
+				.content(username + " has left")
+				.timestamp(LocalDateTime.now())
+				.build();
+
+		chatMessageRepository.save(message);
+
+		messagingTemplate.convertAndSend(Constants.PUBLIC_CHANNEL, message);
 	}
 }
