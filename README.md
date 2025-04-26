@@ -1,22 +1,56 @@
-# Getting Started
+# Online Chatroom
 
-### Reference Documentation
-For further reference, please consider the following sections:
+This project is created as an assignment for a Java Web Technologies university course.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.5.0-M3/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.5.0-M3/maven-plugin/build-image.html)
-* [WebSocket](https://docs.spring.io/spring-boot/3.5.0-M3/reference/messaging/websockets.html)
+The project is a backend server for a chatroom with frontend assets included as static resources.
 
-### Guides
-The following guides illustrate how to use some features concretely:
+The application consists of a **Java (Spring Boot)** backend with **Maven** for building and managing the project.
 
-* [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/)
+Client-server communication is implemented through WebSockets (Spring WebSocket).
 
-### Maven Parent overrides
+## Setup and Usage
 
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+### Prerequisites
 
+Before getting started, ensure that the following tools are installed:
+
+- **Java >= 17+** (JDK) for backend development.
+
+### Running Locally
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/georgi-marchev/chatroom.git
+   cd chatroom
+   ```
+
+2. **Backend Setup** (Java + Maven)
+
+- You can use the **Maven Wrapper** to build the project:
+
+  ```bash
+  ./mvnw clean install
+  ```
+
+- Alternatively, if Maven is installed globally, run:
+
+  ```bash
+  mvn clean install
+  ```
+
+- This command will **Package the backend** into a `.jar` file, which includes the frontend files in the `static` 
+  directory.
+
+3. Access the application at `http://localhost:8080/`. If the port is not available, add the following lines to the 
+   configuration file with the desired port:
+```yaml
+server:
+  port: 8080
+```
+
+### Configuration
+
+1. **Application Configuration**:
+
+    - In order to run the application, you need to configure the [application.yaml](./src/main/resources/application.yaml). This file contains settings for your database, email service (SMTP relay), and other application-specific settings.
