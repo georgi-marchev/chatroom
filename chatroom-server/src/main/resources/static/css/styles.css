@@ -1,0 +1,132 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3fa3e6;
+    --secondary-color-dark: #2980b9;
+    --secondary-color-light: #ceeffd;
+    --background-color: #ecf0f1;
+    --error-color: #e74c3c;
+    --white-color: white;
+}
+
+body {
+    font-family: Verdana, sans-serif;
+    background-color: var(--background-color);
+}
+
+* {
+    font-family: inherit;
+}
+
+/* Login Page Styles */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2rem;
+    background: var(--white-color);
+    border-radius: 10px;
+    box-shadow: 0 0 20px #cacccf;
+    text-align: center;
+}
+
+input[type="text"] {
+    padding: 1rem;
+    border: 2px solid #cacccf;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--secondary-color-dark);
+}
+
+/* Chat Page Styles */
+.chat-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: var(--white-color);
+    border-radius: 10px;
+    box-shadow: 0 0 20px #cacccf;
+    overflow: hidden;
+    display: none;
+}
+
+.header {
+    padding: 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+#messages {
+    height: 60vh;
+    padding: 1.5rem;
+    overflow-y: auto;
+    background-color: var(--white-color);
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: var(--white-color);
+    box-shadow: 0 2px 4px #cacccf;
+}
+
+.message.system {
+    background-color: #eaedef;
+}
+
+.message.personal {
+    background-color: var(--secondary-color-light);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.input-container {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-top: 2px solid #cacccf;
+}
+
+#message-input {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #cacccf;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#message-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.error-message {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--error-color);
+    color: var(--white-color);
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    z-index: 1000;
+}

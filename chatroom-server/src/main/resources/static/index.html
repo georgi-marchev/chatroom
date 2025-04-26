@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat Application</title>
+	<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="login-container" class="login-container">
+	<h1>Welcome to Chat</h1>
+	<div class="form-group">
+		<input type="text" id="username" placeholder="Enter your username">
+		<button id="join-button">Join Chat</button>
+	</div>
+</div>
+
+<div id="chat-container" class="chat-container">
+	<div class="header">
+		<h2>Connected as "<span id="current-user"></span>"</h2>
+	</div>
+	<div id="messages"></div>
+	<div class="input-container">
+		<input type="text" id="message-input" placeholder="Type your message...">
+		<button id="send-button">Send</button>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

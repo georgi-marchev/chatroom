@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatService {
 
+	public static final String SYSTEM = "System";
+
 	private final SimpMessagingTemplate messagingTemplate;
 
 	private final ChatMessageRepository chatMessageRepository;
@@ -58,7 +60,7 @@ public class ChatService {
 
 		ChatMessage joinMessage = ChatMessage.builder()
 				.type(MessageType.JOIN)
-				.sender(username)
+				.sender(SYSTEM)
 				.content(username + " has joined")
 				.timestamp(LocalDateTime.now())
 				.build();
@@ -85,7 +87,7 @@ public class ChatService {
 	public void handleUserLeave(String username) {
 
 		ChatMessage message = ChatMessage.builder()
-				.sender(username)
+				.sender(SYSTEM)
 				.type(MessageType.LEAVE)
 				.content(username + " has left")
 				.timestamp(LocalDateTime.now())
